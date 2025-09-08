@@ -1,3 +1,63 @@
+import { RippleArray } from 'ripple';
+import { Card } from './components/ui/Card.ripple';
+import { NumberButton } from './components/NumberButton.ripple';
+import { OperatorButton } from './components/OperatorButton.ripple';
+
 export component App() {
-	<div class="min-h-screen bg-gradient-to-br from-gray-100 to-white p-8"></div>
+	let $expression = "123 + 456";
+
+	 const evaluateExpression = (expr: string): number => {
+			// Replace display operators with JavaScript operators
+			const jsExpr = expr.replace(/×/g, "*").replace(/÷/g, "/")
+
+			// Basic validation
+			if (!/^[\d+\-*/.() ]+$/.test(jsExpr)) {
+			throw new Error("Invalid characters")
+			}
+
+			// Evaluate safely
+			return Function('"use strict"; return (' + jsExpr + ")")()
+		}
+
+	<div class='min-h-screen bg-gradient-to-br from-gray-100 to-white p-8'>		
+		<div class="flex gap-8 max-w-6xl mx-auto">
+			{/* Calculator */}
+			<Card $class="p-8 bg-gradient-to-br from-white to-gray-50 shadow-2xl border-0">
+				<div class="grid grid-cols-4 gap-4 w-80">
+					{/* Display */}
+					<div class="col-span-4 grid">
+						<span class="h-16 border rounded-lg text-right p-4 text-2xl font-semibold text-gray-900">
+							{$expression}
+						</span>
+					</div>
+					{/* Numbers Grid */}
+					<div class="col-span-3 grid grid-cols-3 gap-3">
+						<NumberButton onClick={() => $expression += "7"}>{"7"}</NumberButton>
+						<NumberButton onClick={() => $expression += "8"}>{"8"}</NumberButton>
+						<NumberButton onClick={() => $expression += "9"}>{"9"}</NumberButton>
+						<NumberButton onClick={() => $expression += "4"}>{"4"}</NumberButton>
+						<NumberButton onClick={() => $expression += "5"}>{"5"}</NumberButton>
+						<NumberButton onClick={() => $expression += "6"}>{"6"}</NumberButton>
+						<NumberButton onClick={() => $expression += "1"}>{"1"}</NumberButton>
+						<NumberButton onClick={() => $expression += "2"}>{"2"}</NumberButton>
+						<NumberButton onClick={() => $expression += "3"}>{"3"}</NumberButton>
+						<NumberButton onClick={() => $expression = ""}>{"C"}</NumberButton>
+						<NumberButton onClick={() => $expression += "0"}>{"0"}</NumberButton>
+						<NumberButton onClick={() => $expression += "."}>{"."}</NumberButton>
+					</div>
+					{/* Operators Column */}
+            		<div class="grid grid-col-1 gap-4">
+						<OperatorButton onClick={() => $expression += " / "}>{"/"}</OperatorButton>
+						<OperatorButton onClick={() => $expression += " * "}>{"*"}</OperatorButton>
+						<OperatorButton onClick={() => $expression += " - "}>{"-"}</OperatorButton>
+						<OperatorButton onClick={() => $expression += " + "}>{"+"}</OperatorButton>
+					</div>
+					{/* Equals Button */}
+					<div class="col-span-4 grid">
+						<OperatorButton onClick={() => $expression = evaluateExpression($expression)}>{"="}</OperatorButton>
+					</div>
+				</div>
+			</Card>
+		</div>
+	</div>
 }

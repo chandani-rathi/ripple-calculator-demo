@@ -1,0 +1,25 @@
+import type { Component } from 'ripple';
+import { effect } from 'ripple';
+import { animate, press } from "motion"
+import whileTap from '../utils/whileTap';
+
+export component OperatorButton(props: { $children?: Component, onClick?: () => void }) {
+	<button class='operator-button h-16 text-xl font-semibold text-gray-800 border border-gray-200 shadow-lg hover:shadow-xl transition-all duration-200 rounded-lg'
+    {@use whileTap({ scale: 0.85 })}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.background = "linear-gradient(to bottom, rgb(129 140 248), rgb(99 102 241))"
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.background = "linear-gradient(to bottom, rgb(99 102 241), rgb(79 70 229))"
+      }}
+      onClick={props.onClick}
+      >
+        <props.$children />
+    </button>
+    <style>
+      .operator-button {
+        background: linear-gradient(to bottom, rgb(99 102 241), rgb(79 70 229));
+        color: white;
+      }
+    </style>
+}
